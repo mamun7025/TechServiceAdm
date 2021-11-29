@@ -29,7 +29,6 @@ public class ServiceItems implements Serializable {
     Double minPrice = 0.00;
 
     Integer sequence;
-//    Boolean active = true;
     Boolean active;
 
 

@@ -20,21 +20,22 @@ public class ServiceOrders {
     // Client
     @ManyToOne
     User clientUser;
-    String clientUserName;
+    String clientTitle;
     String clientGeoLocation;
     Double clientLatitude;
     Double clientLongitude;
 
     // Technician
     @ManyToOne
-    User technicianUser;
-    String technicianUserName;
-    String technicianGeoLocation;
+    User techUser;
+    String techTitle;
+    String techGeoLocation;
     Double techLatitude;
     Double techLongitude;
 
     // Service request item
-//    ServiceItems serviceItems
+    @ManyToOne
+    ServiceItems serviceItem;
     @Column(name = "SERVICE_ITEMS_CODE")
     String serviceItemCode;
     @Column(name = "SERVICE_ITEMS_NAME")
@@ -42,37 +43,18 @@ public class ServiceOrders {
     String serviceDetailsDesc;
     String issueImagePath;
 
+    // Customer contract with client
     Boolean warrantyProduct;
     Boolean servicePartsRequired;
     Boolean servicePartsRequiredAcknlg;
     Boolean isAgreed;
-//    @Column(name="SERVICE_PARTS_PROVIDED", columnDefinition="NUMBER(1,0) default 0")
     @Column(name="SERVICE_PARTS_PROVIDED")
     Boolean servicePartsProvided;
     String refInvoiceNumber;
 
-
     @Column(name="IS_SCHEDULE_ORDER")
     Boolean isScheduleOrder;
     Date scheduleDate;
-    public Boolean getScheduleOrder() {
-        return isScheduleOrder;
-    }
-    public void setScheduleOrder(Boolean scheduleOrder) {
-        isScheduleOrder = scheduleOrder;
-    }
-    public Boolean getIsScheduleOrder() {
-        return isScheduleOrder;
-    }
-    public void setIsScheduleOrder(Boolean isScheduleOrder) {
-        this.isScheduleOrder = isScheduleOrder;
-    }
-    public Date getScheduleDate() {
-        return scheduleDate;
-    }
-    public void setScheduleDate(Date scheduleDate) {
-        this.scheduleDate = scheduleDate;
-    }
 
     String brandName;
     String productSerial;
@@ -80,13 +62,13 @@ public class ServiceOrders {
     Date serviceEndTime;
     Double serviceDuration;
 
+    // after work done
     Double billAmount;
     Double sdAmount;
     Double vatAmount;
     Double cashRcvAmount;
     Double cardRcvAmount;
     Double totalRcvAmount;
-
 
     Double serviceCost; // serviceCost = comChargeAmount + techAmount
     Double comChargePct;
@@ -115,6 +97,15 @@ public class ServiceOrders {
     Date lastUpdateDateTime;
     @Column(name = "LAST_UPDATE_USER")
     String lastUpdateUser;
+
+
+    @PrePersist
+    private void prePersist(){
+
+        if(this.servicePartsProvided == null) this.servicePartsProvided = false;
+
+    }
+
 
     public Long getId() {
         return id;
@@ -148,12 +139,12 @@ public class ServiceOrders {
         this.clientUser = clientUser;
     }
 
-    public String getClientUserName() {
-        return clientUserName;
+    public String getClientTitle() {
+        return clientTitle;
     }
 
-    public void setClientUserName(String clientUserName) {
-        this.clientUserName = clientUserName;
+    public void setClientTitle(String clientTitle) {
+        this.clientTitle = clientTitle;
     }
 
     public String getClientGeoLocation() {
@@ -180,28 +171,28 @@ public class ServiceOrders {
         this.clientLongitude = clientLongitude;
     }
 
-    public User getTechnicianUser() {
-        return technicianUser;
+    public User getTechUser() {
+        return techUser;
     }
 
-    public void setTechnicianUser(User technicianUser) {
-        this.technicianUser = technicianUser;
+    public void setTechUser(User techUser) {
+        this.techUser = techUser;
     }
 
-    public String getTechnicianUserName() {
-        return technicianUserName;
+    public String getTechTitle() {
+        return techTitle;
     }
 
-    public void setTechnicianUserName(String technicianUserName) {
-        this.technicianUserName = technicianUserName;
+    public void setTechTitle(String techTitle) {
+        this.techTitle = techTitle;
     }
 
-    public String getTechnicianGeoLocation() {
-        return technicianGeoLocation;
+    public String getTechGeoLocation() {
+        return techGeoLocation;
     }
 
-    public void setTechnicianGeoLocation(String technicianGeoLocation) {
-        this.technicianGeoLocation = technicianGeoLocation;
+    public void setTechGeoLocation(String techGeoLocation) {
+        this.techGeoLocation = techGeoLocation;
     }
 
     public Double getTechLatitude() {
@@ -220,7 +211,13 @@ public class ServiceOrders {
         this.techLongitude = techLongitude;
     }
 
+    public ServiceItems getServiceItem() {
+        return serviceItem;
+    }
 
+    public void setServiceItem(ServiceItems serviceItem) {
+        this.serviceItem = serviceItem;
+    }
 
     public String getServiceItemCode() {
         return serviceItemCode;
@@ -254,7 +251,6 @@ public class ServiceOrders {
         this.issueImagePath = issueImagePath;
     }
 
-
     public Boolean getWarrantyProduct() {
         return warrantyProduct;
     }
@@ -279,12 +275,12 @@ public class ServiceOrders {
         this.servicePartsRequiredAcknlg = servicePartsRequiredAcknlg;
     }
 
-    public Boolean getIsAgreed() {
+    public Boolean getAgreed() {
         return isAgreed;
     }
 
-    public void setIsAgreed(Boolean isAgreed) {
-        this.isAgreed = isAgreed;
+    public void setAgreed(Boolean agreed) {
+        isAgreed = agreed;
     }
 
     public Boolean getServicePartsProvided() {
@@ -295,14 +291,28 @@ public class ServiceOrders {
         this.servicePartsProvided = servicePartsProvided;
     }
 
-
-
     public String getRefInvoiceNumber() {
         return refInvoiceNumber;
     }
 
     public void setRefInvoiceNumber(String refInvoiceNumber) {
         this.refInvoiceNumber = refInvoiceNumber;
+    }
+
+    public Boolean getScheduleOrder() {
+        return isScheduleOrder;
+    }
+
+    public void setScheduleOrder(Boolean scheduleOrder) {
+        isScheduleOrder = scheduleOrder;
+    }
+
+    public Date getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(Date scheduleDate) {
+        this.scheduleDate = scheduleDate;
     }
 
     public String getBrandName() {
@@ -393,6 +403,38 @@ public class ServiceOrders {
         this.totalRcvAmount = totalRcvAmount;
     }
 
+    public Double getServiceCost() {
+        return serviceCost;
+    }
+
+    public void setServiceCost(Double serviceCost) {
+        this.serviceCost = serviceCost;
+    }
+
+    public Double getComChargePct() {
+        return comChargePct;
+    }
+
+    public void setComChargePct(Double comChargePct) {
+        this.comChargePct = comChargePct;
+    }
+
+    public Double getComChargeAmount() {
+        return comChargeAmount;
+    }
+
+    public void setComChargeAmount(Double comChargeAmount) {
+        this.comChargeAmount = comChargeAmount;
+    }
+
+    public Double getTechAmount() {
+        return techAmount;
+    }
+
+    public void setTechAmount(Double techAmount) {
+        this.techAmount = techAmount;
+    }
+
     public Date getBookTime() {
         return bookTime;
     }
@@ -449,43 +491,6 @@ public class ServiceOrders {
         this.rating = rating;
     }
 
-
-
-    public Double getServiceCost() {
-        return serviceCost;
-    }
-
-    public void setServiceCost(Double serviceCost) {
-        this.serviceCost = serviceCost;
-    }
-
-    public Double getComChargePct() {
-        return comChargePct;
-    }
-
-    public void setComChargePct(Double comChargePct) {
-        this.comChargePct = comChargePct;
-    }
-
-    public Double getComChargeAmount() {
-        return comChargeAmount;
-    }
-
-    public void setComChargeAmount(Double comChargeAmount) {
-        this.comChargeAmount = comChargeAmount;
-    }
-
-    public Double getTechAmount() {
-        return techAmount;
-    }
-
-    public void setTechAmount(Double techAmount) {
-        this.techAmount = techAmount;
-    }
-
-
-
-
     public Date getCreationDateTime() {
         return creationDateTime;
     }
@@ -517,6 +522,7 @@ public class ServiceOrders {
     public void setLastUpdateUser(String lastUpdateUser) {
         this.lastUpdateUser = lastUpdateUser;
     }
+
 
 
 }

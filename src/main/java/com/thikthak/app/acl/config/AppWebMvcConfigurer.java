@@ -1,6 +1,6 @@
 package com.thikthak.app.acl.config;
 
-import com.thikthak.app.acl.security.filter.MyCustomInterceptor;
+import com.thikthak.app.acl.security.filter.MyAppRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.util.concurrent.TimeUnit;
 
 // https://stackoverflow.com/questions/31082981/spring-boot-adding-http-request-interceptors
@@ -28,7 +27,7 @@ public class AppWebMvcConfigurer implements WebMvcConfigurer {
 
 
     @Autowired
-    MyCustomInterceptor myCustomInterceptor;
+    MyAppRequestInterceptor myCustomInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

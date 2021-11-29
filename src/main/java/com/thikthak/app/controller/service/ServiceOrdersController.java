@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/serviceorder")
@@ -31,20 +30,20 @@ public class ServiceOrdersController {
     }
 
 
-    @RequestMapping("/index1")
+    @RequestMapping("/getAll")
     public String getAll(Model model)
     {
-        List<ServiceOrders> list = service.getAll();
+        List<ServiceOrders> list = this.service.getAll();
         model.addAttribute("objectList", list);
         return "view/service/serviceorder/index";
     }
 
-    @Secured({"ROLE_EDITOR", "ROLE_ADMIN"})
+    @Secured({"ROLE_USER", "ROLE_EDITOR", "ROLE_ADMIN"})
     @RequestMapping("/index")
     public String getAllPaginated(HttpServletRequest request, Model model, @RequestParam Map<String,String> clientParams) {
 
         PaginationHelper pHelper = new PaginationHelper(request);
-        Page<ServiceOrders> page = service.getAllPaginated(clientParams, pHelper.pageNum, pHelper.pageSize, pHelper.sortField, pHelper.sortDir);
+        Page<ServiceOrders> page = this.service.getAllPaginated(clientParams, pHelper.pageNum, pHelper.pageSize, pHelper.sortField, pHelper.sortDir);
         List< ServiceOrders > list = page.getContent();
 
         model.addAttribute("currentPage", pHelper.pageNum);
@@ -67,7 +66,7 @@ public class ServiceOrdersController {
     {
         ServiceOrders object = null;
         try {
-            object = service.findById(id);
+            object = this.service.findById(id);
         } catch (Exception ex) {
             model.addAttribute(SysMgsStr.msgKey3, SysMgsStr.msgDesc3);
         }
@@ -88,7 +87,7 @@ public class ServiceOrdersController {
         if (result.hasErrors()) {
             return "view/service/serviceorder/create";
         }
-        postObjInst = service.createOrUpdate(postObjInst);
+        postObjInst = this.service.createOrUpdate(postObjInst);
         model.addAttribute("object", postObjInst);
         redirAttrs.addFlashAttribute(SysMgsStr.msgKey1, SysMgsStr.msgDesc1);
 
@@ -96,10 +95,10 @@ public class ServiceOrdersController {
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
-    public String edit(Model model, @PathVariable("id") Optional<Long> id) throws Exception
+    public String edit(Model model, @PathVariable("id") Long id) throws Exception
     {
-        if (id.isPresent()) {
-            ServiceOrders entity = service.getById(id.get());
+        if (id != null) {
+            ServiceOrders entity = service.getById(id);
             model.addAttribute("object", entity);
         } else {
             model.addAttribute("object", new ServiceOrders());

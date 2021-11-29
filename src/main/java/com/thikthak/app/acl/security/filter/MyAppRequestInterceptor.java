@@ -17,7 +17,7 @@ import java.util.HashMap;
 // https://fullstackdeveloper.guru/2020/07/13/how-to-log-ip-addresses-of-incoming-requests-to-a-spring-boot-app-in-a-centralized-way/
 
 @Component
-public class MyCustomInterceptor extends HandlerInterceptorAdapter {
+public class MyAppRequestInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     private VisitorsLogRepository visitorsLogRepository;

@@ -42,7 +42,6 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
         System.out.println(configAttributes);
         System.out.println("I am here... DecicionMgr............666");
 
-//这段代码其实不需要,因为spring-security-core-4.1.4.RELEASE-sources.jar!/org/springframework/security/access/intercept/AbstractSecurityInterceptor.java第215行判断提前返回了,不会进入decide方法
         if (CollectionUtils.isEmpty(configAttributes)) {
             throw new AccessDeniedException("not allow");
         }
@@ -50,18 +49,18 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
         Iterator<ConfigAttribute> ite = configAttributes.iterator();
         while (ite.hasNext()) {
             ConfigAttribute ca = ite.next();
+//            String needRole =  ca.getAttribute();
             String needRole = ((org.springframework.security.access.SecurityConfig) ca).getAttribute();
+
             for (GrantedAuthority ga : authentication.getAuthorities()) {
 
                 System.out.println("Login user authority: ");
                 System.out.println(ga.getAuthority());
                 if(ga.getAuthority().equals(needRole)){
-                    //匹配到有对应角色,则允许通过
                     return;
                 }
             }
         }
-        //该url有配置权限,但是当然登录用户没有匹配到对应权限,则禁止访问
         throw new AccessDeniedException("not allow");
 
     }
