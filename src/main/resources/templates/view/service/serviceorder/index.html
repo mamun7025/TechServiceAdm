@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--suppress CheckTagEmptyBody -->
+    <!--alternative solution to use th:block in header fragment -->
+    <th:block th:include="/layouts/_head :: head"></th:block>
+    <title id="pageTitle">Service Order</title>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="/layouts/_header :: header"></div>
+
+    <!-- Main Sidebar Container -->
+    <div th:insert="/layouts/_mainSidebarx :: mainSidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Service Order</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Service Order</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+
+
+
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <div class="alert alert-warning alert-dismissible" th:if="${warningMsg}">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fas fa-check"></i>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <span th:text="${warningMsg}"></span>
+                </div>
+
+
+                <!-- --------------Search box start ---------------------------------------------------------------- -->
+                <div class="card ">
+                    <div class="card-body">
+                        <form>
+
+                            <div class="row">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group row">
+                                        <label for="orderCode" class="col-sm-4 col-form-label col-form-label-sm">Order Code</label>
+                                        <div class="col-sm-8 class220w">
+                                            <input type="text" name="orderCode" th:value="${param.orderCode}" id="orderCode" class="form-control form-control-sm" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="orderDateFrom" class="col-sm-4 col-form-label col-form-label-sm">Order Date From</label>
+                                        <div class="col-sm-8 class220w">
+                                            <input type="text" name="orderDateFrom" th:value="${param.orderDateFrom}" id="orderDateFrom" class="form-control form-control-sm datePickerField"  placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group row">
+                                        <label for="clientName" class="col-sm-4 col-form-label col-form-label-sm">Client Name</label>
+                                        <div class="col-sm-8 class220w">
+                                            <input type="text" name="clientName" th:value="${param.clientName}" id="clientName" class="form-control form-control-sm" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="orderDateTo" class="col-sm-4 col-form-label col-form-label-sm">Order Date To</label>
+                                        <div class="col-sm-8 class220w">
+                                            <input type="text" name="orderDateTo" th:value="${param.orderDateTo}" id="orderDateTo" class="form-control form-control-sm datePickerField"  placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group row">
+                                        <label for="technicianName" class="col-sm-4 col-form-label col-form-label-sm">Technician Name</label>
+                                        <div class="col-sm-8 class220w">
+                                            <input type="text" name="technicianName" th:value="${param.technicianName}" id="technicianName" class="form-control form-control-sm" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="btnSubmit" class="col-sm-4 col-form-label col-form-label-sm"></label>
+                                        <div class="col-sm-8 class220w">
+                                            <a href="" th:href="@{/serviceorder/index}" class="form-control form-control-sm btn-default" style="display: inline-block; width: 35%;">Reset</a>
+                                            <button type="submit" class="form-control form-control-sm btn-warning" id="btnSubmit" style="color: white; display: inline-block; width: 63%;"><i class="fas fa-search"></i> Search</button>
+<!--                                            <button type="submit" class="form-control form-control-sm btn-warning" id="btnSubmit" style="color: white;"><i class="fas fa-search"></i> Search</button>-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <!-- --------------Search box end ------------------------------------------------------------------ -->
+
+
+
+
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+
+                        <a th:href="@{/serviceorder/create}" class="btn btn-outline-primary"><i class="fas fa-plus-circle"> Add</i></a>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                <i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+
+
+                        <!-- Customize user body content -->
+                        <div th:switch="${objectList}">
+
+                            <div class="col-md-12">
+                                <h2 th:case="null">No record found !!</h2>
+                                <div th:case="*" class="table-responsive">
+
+                                    <table class="table table-striped nowrapColumnTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Order Code</th>
+                                                <th>Order Place Time</th>
+                                                <th>Client Name</th>
+                                                <th>Technician Name</th>
+                                                <th>Service Item</th>
+                                                <th>Problem Details</th>
+<!--                                                <th>Creation User</th>-->
+<!--                                                <th>Creation DateTime</th>-->
+<!--                                                <th colspan="" style="width: 210px; max-width: 210px;">Action</th>-->
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="thisObj : ${objectList}">
+                                                <td th:text="${thisObj.id}"></td>
+                                                <td th:text="${thisObj.orderCode}"></td>
+                                                <td th:text="${#calendars.format(thisObj.orderPlaceTime, 'dd/MMM/yyyy hh:mm a')}"></td>
+                                                <td th:text="${thisObj.clientUserName}"></td>
+                                                <td th:text="${thisObj.technicianUserName}"></td>
+                                                <td th:text="${thisObj.serviceItemName}"></td>
+                                                <td th:text="${thisObj.serviceDetailsDesc}"></td>
+<!--                                                <td th:text="${thisObj.creationUser}"></td>-->
+<!--                                                <td th:text="${thisObj.creationDateTime}"></td>-->
+                                                <td class="text-nowrap" style="">
+                                                    <a th:href="@{/serviceorder/show/{id}(id=${thisObj.id})}" class="btn btn-outline-secondary btn-sm">
+                                                        <i class="far fa-eye"></i> View
+                                                    </a>
+                                                    <a th:href="@{/serviceorder/edit/{id}(id=${thisObj.id})}" class="btn btn-outline-primary btn-sm">
+                                                        <i class="far fa-edit"></i> Edit
+                                                    </a>
+                                                    <a th:href="@{/serviceorder/delete/{id}(id=${thisObj.id})}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                        <i class="far fa-trash-alt"></i> Delete
+                                                    </a>
+                                                </td>
+                                                <!--<td class="text-nowrap" style="width: 70px;">
+                                                    <a th:href="@{/serviceorder/edit/{id}(id=${thisObj.id})}" class="btn btn-primary btn-sm">
+                                                        <i class="far fa-edit"></i> Edit
+                                                    </a>
+                                                </td>
+                                                <td class="text-nowrap" style="width: 70px;">
+                                                    <a th:href="@{/serviceorder/delete/{id}(id=${thisObj.id})}" class="btn btn-danger btn-sm">
+                                                        <i class="far fa-trash-alt"></i> Delete
+                                                    </a>
+                                                </td>-->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer clearfix" th:with="pagePath='/serviceorder/index'">
+                                    <div th:include="layouts/_pagination :: defaultPagination"></div>
+                                </div>
+
+                            </div>
+                            <!-- /.card -->
+
+
+                        </div>
+                        <!-- /. Customize user body content -->
+
+                    </div>
+                </div>
+
+
+
+
+            </div><!--/. container-fluid -->
+        </section>
+        <!-- /.content -->
+
+
+
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer th:include="layouts/_footer :: footer" class="main-footer"></footer>
+
+</div>
+<!-- ./wrapper -->
+
+
+<div th:include="layouts/_footerScripts :: footerScripts"></div>
+
+<!-- PAGE SCRIPTS -->
+<script type="text/javascript" src="/static/js/application.js" th:src="@{/js/application.js}"></script>
+<!-- PAGE STYLES -->
+<link rel="stylesheet" href="/static/css/application.css" th:href="@{/css/application.css}">
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.datePickerField').daterangepicker({
+            singleDatePicker: true,
+            autoUpdateInput: false,
+            autoApply: true,
+            minYear: 1901,
+            locale: {
+                format: "YYYY-MM-DD",
+                cancelLabel: 'Cancel',
+                applyLabel: "Apply",
+            }
+        }, function(start, end, label) {
+            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        });
+
+        $('.datePickerField').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD'));
+        });
+        $('.datePickerField').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
+
+    });
+</script>
+
+
+
+</body>
+</html>

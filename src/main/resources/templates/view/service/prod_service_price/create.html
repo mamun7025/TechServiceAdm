@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--suppress CheckTagEmptyBody -->
+    <!--alternative solution to use th:block in header fragment -->
+    <th:block th:include="/layouts/_head :: head"></th:block>
+    <title id="pageTitle">Service Price by Technician Rating</title>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="/layouts/_header :: header"></div>
+
+    <!-- Main Sidebar Container -->
+    <div th:insert="/layouts/_mainSidebarx :: mainSidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Service Price by Technician Rating</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Service Price by Technician Rating</a></li>
+                            <li class="breadcrumb-item active">Create</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+
+
+
+                <!-- Horizontal Form -->
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Add ProdServicePriceRateList</h3>
+                        &nbsp;&nbsp;
+                        <a href="/user/index" th:href="@{/prodserviceprice/index}" class=""><i class="fas fa-long-arrow-alt-left"></i> Back to List</a>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="#" th:action="@{/prodserviceprice/save}" th:object="${object}" method="post" class="form-horizontal">
+                        <div class="card-body">
+
+                            <input type="hidden" id="id" th:field="*{id}">
+
+                            <!--Work-->
+                            <div class="form-group row">
+                                <label for="serviceProduct" class="col-form-label col-sm-2 ">Service Product</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{serviceProduct}" class="form-control" id="serviceProduct" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('serviceProduct')}" th:errors="*{serviceProduct}" class="text-danger"></span></div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="startRange" class="col-form-label col-sm-2 ">Start Range</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{startRange}" class="form-control" id="startRange" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('startRange')}" th:errors="*{startRange}" class="text-danger"></span></div>
+                            </div>
+
+
+                            <!--New Work by sumon-->
+                            <div class="form-group row">
+                                <label for="endRange" class="col-form-label col-sm-2 ">End Range</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{endRange}" class="form-control" id="endRange" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('endRange')}" th:errors="*{endRange}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="servicePrice" class="col-form-label col-sm-2 ">Service Price</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{servicePrice}" class="form-control" id="servicePrice" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('servicePrice')}" th:errors="*{servicePrice}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="creationDateTime" class="col-form-label col-sm-2 ">Creation DateTime</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{creationDateTime}" class="form-control" id="creationDateTime" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('creationDateTime')}" th:errors="*{creationDateTime}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="creationUser" class="col-form-label col-sm-2 ">Creation User</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{creationUser}" class="form-control" id="creationUser" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('creationUser')}" th:errors="*{creationUser}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastUpdateDateTime" class="col-form-label col-sm-2 ">Last Update DateTime</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{lastUpdateDateTime}" class="form-control" id="lastUpdateDateTime" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('lastUpdateDateTime')}" th:errors="*{lastUpdateDateTime}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastUpdateUser" class="col-form-label col-sm-2 ">Last Update User</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{lastUpdateUser}" class="form-control" id="lastUpdateUser" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('lastUpdateUser')}" th:errors="*{lastUpdateUser}" class="text-danger"></span></div>
+                            </div>
+
+                            <!--End Work By Sumon-->
+
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <a href="/menu/index" th:href="@{/prodserviceprice/index}" class="btn btn-default"><i class="fas fa-times"></i> Cancel</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-info"><i class="fas fa-check"></i> Create</button>
+                        </div>
+                        <!-- /.card-footer -->
+                    </form>
+                </div>
+                <!-- /.card -->
+
+
+
+
+            </div><!--/. container-fluid -->
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer th:include="layouts/_footer :: footer" class="main-footer"></footer>
+
+</div>
+<!-- ./wrapper -->
+
+
+<div th:include="layouts/_footerScripts :: footerScripts"></div>
+<!-- PAGE SCRIPTS -->
+<script type="text/javascript" src="/static/js/application.js" th:src="@{/js/application.js}"></script>
+
+
+</body>
+</html>

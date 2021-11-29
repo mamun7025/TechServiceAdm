@@ -1,0 +1,61 @@
+# Server
+server.port=7171
+server.servlet.context-path=/thikthak
+
+spring.security.user.name=foo
+spring.security.user.password=foo
+
+
+## Datasource
+#spring.datasource.url=jdbc:oracle:thin:@//192.168.1.70:1521/DITF
+spring.datasource.url=jdbc:oracle:thin:@192.168.1.70:1521:DITF
+spring.datasource.username=THIKTHAK
+spring.datasource.password=THIK
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+
+## JPA
+# Hibernate ddl auto (none, create, create-drop, validate, update)
+# below two line do not use for existing database
+#spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.generate-ddl=true
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.formate_sql=true
+
+
+## Hibernate Logging
+logging.pattern.console=%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(%logger{0}){blue} %clr(%m){faint}%n
+logging.level.org.hibernate.SQL= DEBUG
+logging.level.org.hibernate.type=TRACE
+
+## src link
+## https://www.javaguides.net/2019/08/spring-boot-jpa-hibernate-one-to-many-example-tutorial.html#:~:text=%40OneToMany%20and%20%40ManyToOne%20defines%20a,key%20to%20the%20referenced%20table.
+
+
+
+# ---------- File Storage / Upload / Display Manage Start --------------------------------------------------------------
+# *** VVI https://attacomsian.com/blog/uploading-files-spring-boot
+# max file size
+spring.servlet.multipart.max-file-size=10MB
+# max request size
+spring.servlet.multipart.max-request-size=10MB
+# files storage location (stores all files uploaded via REST API)
+
+# Option-2
+# *** http://zetcode.com/springboot/uploadfile/
+# For Linux
+#upload.file.directory=/var/www/upload/
+# For Windows
+upload.file.directory=E:/TechServiceProject/localnet_svn/APP_Multimedia/
+#upload.file.directory=E:/Profssional_Projects/Walton/ThikThak/backoffice/APP_Multimedia/
+
+# Option-3
+#http://mkaroune.e-monsite.com/pages/spring/get-images-from-external-folder-on-disk.html
+
+# R&D Links
+#https://www.aralmighty.com/uploading-files-spring-boot
+#https://spring.io/guides/gs/uploading-files/
+# *** https://mkyong.com/spring-boot/spring-boot-file-upload-example/
+# VVI*** https://stackoverflow.com/questions/28556300/serving-static-resources-from-file-system-spring-boot-web
+# *** VVI https://www.boraji.com/spring-mvc-5-static-resources-handling-example
+# ---------- File Storage / Upload / Display Manage End ----------------------------------------------------------------

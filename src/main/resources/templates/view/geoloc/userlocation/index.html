@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTag -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--suppress CheckTagEmptyBody, HtmlUnknownTag -->
+    <!--alternative solution to use th:block in header fragment, HtmlUnknownTag, HtmlUnknownTag -->
+    <th:block th:include="/layouts/_head :: head"></th:block>
+    <title id="pageTitle">User Location</title>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" th:inline="text">
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="/layouts/_header :: header"></div>
+
+    <!-- Main Sidebar Container -->
+    <div th:insert="/layouts/_mainSidebarx :: mainSidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">User Location</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">User Location</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+
+
+
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <div class="alert alert-warning alert-dismissible" th:if="${warningMsg}">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fas fa-check"></i>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <span th:text="${warningMsg}"></span>
+                </div>
+
+                <!--<div th:with="test=10">
+                    <p th:with="test=${test + test}" th:text="${test}">This will be 20</p>
+                    <p th:text="${test}">This will be 10</p>
+                </div>-->
+
+                <!-- --------------Search box start ---------------------------------------------------------------- -->
+                <div class="card ">
+                    <div class="card-body">
+                        <form id="genSearchForm">
+
+                            <div class="row">
+
+                                <div class="col-sm-3">
+                                    <div class="form-group row">
+                                        <label for="user" class="col-sm-4 col-form-label col-form-label-sm">User</label>
+                                        <div class="col-sm-8 class220w">
+                                            <input type="text" name="user" th:value="${param.user}" id="user" class="form-control form-control-sm" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group row">
+                                        <label for="userType" class="col-sm-4 col-form-label col-form-label-sm text-right">User Type</label>
+                                        <div class="col-sm-8 class220w">
+<!--                                            <input type="text" name="userType" th:value="${param.userType}" id="userType" class="form-control form-control-sm" placeholder="">-->
+                                            <select name="userType" class="form-control form-control-sm" id="userType">
+                                                <option value=""> Select </option>
+                                                <option value="User"> User </option>
+                                                <option value="Technician"> Technician </option>
+                                                <option value="Admin"> Admin </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group row">
+                                        <label for="dstFromUser" class="col-sm-4 col-form-label col-form-label-sm text-right">Distance from user</label>
+                                        <div class="col-sm-8 class220w">
+                                            <input type="text" name="dstFromUser" th:value="${param.dstFromUser}" id="dstFromUser" class="form-control form-control-sm" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group row">
+                                        <label for="btnSubmit" class="col-sm-4 col-form-label col-form-label-sm"></label>
+                                        <div class="col-sm-8 class220w">
+                                            <a href="" th:href="@{/userlocation/index}" class="form-control form-control-sm btn-default" style="display: inline-block; width: 35%;">Reset</a>
+                                            <button type="submit" class="form-control form-control-sm btn-warning" id="btnSubmit" style="color: white; display: inline-block; width: 63%;"><i class="fas fa-search"></i> Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <!-- --------------Search box end ------------------------------------------------------------------ -->
+
+
+
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+
+<!--                        <a th:href="@{/role/create}" class="btn btn-primary"><i class="fas fa-plus-circle"> Add Role</i></a>-->
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                <i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+
+
+                        <!-- Customize user body content -->
+                        <div th:switch="${objectList}">
+
+                            <div class="col-md-12">
+                                <h2 th:case="null">No record found !!</h2>
+                                <div th:case="*" class="table-responsive">
+
+                                    <table class="table table-striped nowrapColumnTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>User</th>
+                                                <th>Title</th>
+                                                <th>Latitude</th>
+                                                <th>Longitude</th>
+                                                <th>Heading</th>
+                                                <th>Speed</th>
+                                                <th>Last Update Time</th>
+                                                <th>Timestamp</th>
+                                                <th:block th:if="${(param.dstFromUser != null) and (param.dstFromUser[0] != '')}">
+                                                    <th class="text-right">Distance</th>
+                                                </th:block>
+                                                <th>View On Map</th>
+<!--                                                <th colspan="3" style="width: 210px; max-width: 210px;">Action</th>-->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="thisObj : ${objectList}">
+                                                <td th:text="${thisObj.id}"></td>
+                                                <td th:text="${thisObj.user?.username}"></td>
+                                                <td th:text="${thisObj.user?.displayName}"></td>
+                                                <td th:text="${thisObj.latitude}"></td>
+                                                <td th:text="${thisObj.longitude}"></td>
+                                                <td th:text="${thisObj.heading}"></td>
+                                                <td th:text="${thisObj.speed}"></td>
+<!--                                                <td th:text="${thisObj.lastUpdateDateTime}"></td>-->
+                                                <td th:text="${#calendars.format(thisObj.lastUpdateDateTime, 'dd/MMM/yyyy hh:mm a')}"></td>
+                                                <td th:text="${thisObj.timestamp}"></td>
+                                                <th:block th:if="${(param.dstFromUser != null) and (param.dstFromUser[0] != '')}">
+                                                    <td class="text-right">
+                                                        [[ ${calDist.get(thisObj.id)} ]]
+<!--                                                        <span th:text="${#numbers.formatDecimal([[ ${calDist.get(thisObj.id)} ]] , 0, 'COMMA', 3, 'POINT')}">0.00</span>-->
+                                                    </td>
+                                                </th:block>
+                                                <td class="text-nowrap" style="width: 70px;">
+                                                    <a th:href="'https://www.google.com/maps/dir//' + ${thisObj.latitude} + ',' +  ${thisObj.longitude} + ''" class="btn btn-outline-secondary btn-sm" target="_blank" style="min-width: 100px;">
+                                                        <i class="fas fa-map-marker-alt"></i> View
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer clearfix" th:with="pagePath='/userlocation/index'">
+                                    <div th:include="layouts/_pagination :: defaultPagination"></div>
+                                </div>
+
+                            </div>
+                            <!-- /.card -->
+
+
+                        </div>
+                        <!-- /. Customize user body content -->
+
+                    </div>
+                </div>
+
+
+
+
+            </div><!--/. container-fluid -->
+        </section>
+        <!-- /.content -->
+
+
+
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer th:include="layouts/_footer :: footer" class="main-footer"></footer>
+
+</div>
+<!-- ./wrapper -->
+
+
+<div th:include="layouts/_footerScripts :: footerScripts"></div>
+
+<!-- Z-ERPLIB SCRIPTS -->
+<script type="text/javascript" src="/static/vendor/erplib/js/JsClientAPI.js" th:src="@{/vendor/erplib/js/JsClientAPI.js}"></script>
+
+<!-- PAGE SCRIPTS -->
+<script type="text/javascript" src="/static/js/application.js" th:src="@{/js/application.js}"></script>
+<!-- PAGE STYLES -->
+<link rel="stylesheet" href="/static/css/application.css" th:href="@{/css/application.css}">
+
+
+
+</body>
+</html>

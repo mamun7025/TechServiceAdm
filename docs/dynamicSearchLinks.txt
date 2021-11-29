@@ -1,0 +1,7 @@
+// for search study
+1. https://www.youtube.com/watch?v=U7AXDX-qMd0
+2. https://kalliphant.com/spring-data-jpa-dynamic-queries/
+3. https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-filter-search-examples
+4. https://attacomsian.com/blog/spring-data-jpa-specifications
+5. https://medium.com/backend-habit/spring-jpa-make-dynamic-where-using-predicate-and-criteria-84550dfaa182
+

@@ -1,0 +1,44 @@
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" version="2.0">
+
+    <named-native-query name="User.getAllUser" result-class="com.thikthak.app.acl.auth.domain.User">
+        <query>
+            <![CDATA[
+            SELECT * FROM AUTH_USER WHERE LAST_NAME = 'Bauer'
+            ]]>
+        </query>
+    </named-native-query>
+
+<!--    <named-native-query name="User.getAllUser2" result-class="com.thikthak.app.repository.nativeQuery.mapres.PersonMapRes">-->
+<!--        <query>-->
+<!--            <![CDATA[-->
+<!--            SELECT ID FROM AUTH_USER-->
+<!--            ]]>-->
+<!--        </query>-->
+<!--    </named-native-query>-->
+
+
+
+<!--    <sql-result-set-mapping name="JediMapping">-->
+<!--        <constructor-result target-class="com.thikthak.app.repository.nativeQuery.mapres.PersonMapRes">-->
+<!--            <column name="name" class="java.lang.String"/>-->
+<!--            <column name="age" class="java.lang.Integer"/>-->
+<!--        </constructor-result>-->
+<!--    </sql-result-set-mapping>-->
+
+    <sql-result-set-mapping name="AuthorMappingXml">
+        <entity-result entity-class="com.thikthak.app.repository.nativeQuery.mapres.PersonMapRes">
+            <field-result name="id" column="ID"/>
+            <field-result name="displayName" column="DISPLAY_NAME"/>
+        </entity-result>
+    </sql-result-set-mapping>
+
+<!--    <sql-result-set-mapping name="BookValueMappingXml">-->
+<!--        <constructor-result target-class="com.thikthak.app.repository.nativeQuery.mapres.PersonMapRes">-->
+<!--            <column name="id" class="java.lang.Long"/>-->
+<!--            <column name="title"/>-->
+<!--            <column name="version" class="java.lang.Long"/>-->
+<!--            <column name="authorName"/>-->
+<!--        </constructor-result>-->
+<!--    </sql-result-set-mapping>-->
+
+</entity-mappings>

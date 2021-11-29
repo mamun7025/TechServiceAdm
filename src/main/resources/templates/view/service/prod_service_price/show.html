@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--suppress CheckTagEmptyBody, HtmlUnknownTag -->
+    <!--alternative solution to use th:block in header fragment, HtmlUnknownTag -->
+    <th:block th:include="/layouts/_head :: head"></th:block>
+    <title id="pageTitle">Service Price by Technician Rating</title>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="/layouts/_header :: header"></div>
+
+    <!-- Main Sidebar Container -->
+    <div th:insert="/layouts/_mainSidebarx :: mainSidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Service Price by Technician Rating</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Service Price by Technician Rating</a></li>
+                            <li class="breadcrumb-item active">Show</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <div class="alert alert-info alert-dismissible" th:if="${successMsg}">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <!--<h6></h6>-->
+                    <i class="icon fas fa-check"></i>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <span th:text="${successMsg}"></span>
+                </div>
+
+                <!-- Horizontal Form -->
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Service Price by Technician Rating</h3>
+                        &nbsp;&nbsp;
+                        <a href="/user/index" th:href="@{/prodserviceprice/index}" class=""><i class="fas fa-long-arrow-alt-left"></i> Back to List</a>
+                        &nbsp;|&nbsp;
+                        <a href="/user/create" th:href="@{/prodserviceprice/create}" class=""><i class="fas fa-file-alt"></i> New Form</a>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="#" th:object="${object}" method="post" class="form-horizontal object-show-form">
+                        <div class="card-body">
+
+                            <!--                            <input type="hidden" id="id" th:field="*{id}">-->
+
+                            <div class="form-group row">
+                                <label for="id" class="col-form-label col-sm-2 ">ID</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{id}" class="form-control" id="id"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="serviceProduct" class="col-form-label col-sm-2 ">Service Product</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{serviceProduct}" class="form-control" id="serviceProduct"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="startRange" class="col-form-label col-sm-2 ">Start Range</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{startRange}" class="form-control" id="startRange"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="endRange" class="col-form-label col-sm-2 ">End Range</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{endRange}" class="form-control" id="endRange"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="servicePrice" class="col-form-label col-sm-2 ">Service Price</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{servicePrice}" class="form-control" id="servicePrice"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="creationDateTime" class="col-form-label col-sm-2 ">Creation DateTime</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{creationDateTime}" class="form-control" id="creationDateTime"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="creationUser" class="col-form-label col-sm-2 ">Creation User</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{creationUser}" class="form-control" id="creationUser"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="lastUpdateDateTime" class="col-form-label col-sm-2 ">Last Update DateTime</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{lastUpdateDateTime}" class="form-control" id="lastUpdateDateTime"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastUpdateUser" class="col-form-label col-sm-2 ">Last Update User</label>
+                                <div class="col-sm-5">
+                                    <span th:utext="*{lastUpdateUser}" class="form-control" id="lastUpdateUser"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <a href="/menu/edit/" th:href="@{/prodserviceprice/edit/{id}(id=${object.id})}" class="btn btn-info"><i class="far fa-edit"></i> Edit</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/menu/delete/" th:href="@{/prodserviceprice/delete/{id}(id=${object.id})}" class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</a>
+                        </div>
+                        <!-- /.card-footer -->
+                    </form>
+                </div>
+                <!-- /.card -->
+
+
+
+
+            </div><!--/. container-fluid -->
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer th:include="layouts/_footer :: footer" class="main-footer"></footer>
+
+</div>
+<!-- ./wrapper -->
+
+
+<div th:include="layouts/_footerScripts :: footerScripts"></div>
+<!-- PAGE SCRIPTS -->
+<script type="text/javascript" src="/static/js/application.js" th:src="@{/js/application.js}"></script>
+<!-- PAGE STYLES -->
+<link rel="stylesheet" href="/static/css/application.css" th:href="@{/css/application.css}">
+
+
+</body>
+</html>

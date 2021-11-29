@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--suppress CheckTagEmptyBody -->
+    <!--alternative solution to use th:block in header fragment -->
+    <th:block th:include="/layouts/_head :: head"></th:block>
+    <title id="pageTitle">Service Items</title>
+    <!-- PAGE STYLES -->
+    <link rel="stylesheet" href="/static/css/application.css" th:href="@{/css/application.css}">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="/layouts/_header :: header"></div>
+
+    <!-- Main Sidebar Container -->
+    <div th:insert="/layouts/_mainSidebarx :: mainSidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Items</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Items</a></li>
+                            <li class="breadcrumb-item active">Edit</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+
+
+
+                <!-- Horizontal Form -->
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit User</h3>
+                        &nbsp;&nbsp;
+                        <a href="/user/index" th:href="@{/serviceitem/index}" class=""><i class="fas fa-long-arrow-alt-left"></i> Back to List</a>
+                        &nbsp;|&nbsp;
+                        <a href="/user/create" th:href="@{/serviceitem/create}" class=""><i class="fas fa-file-alt"></i> New Form</a>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="#" th:action="@{/serviceitem/update}" th:object="${object}" method="post" class="form-horizontal">
+                        <div class="card-body">
+
+                            <input type="hidden" id="id" th:field="*{id}">
+
+                            <div class="form-group row">
+                                <label for="itemCode" class="col-form-label col-sm-2 ">Item Code</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{itemCode}" class="form-control" id="itemCode" placeholder="" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="itemName" class="col-form-label col-sm-2 ">Item Description</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{itemName}" class="form-control" id="itemName" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="regularPrice" class="col-form-label col-sm-2 ">Regular Price</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{regularPrice}" class="form-control" id="regularPrice" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('regularPrice')}" th:errors="*{regularPrice}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="minPrice" class="col-form-label col-sm-2 ">Min Price</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{minPrice}" class="form-control" id="minPrice" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('minPrice')}" th:errors="*{minPrice}" class="text-danger"></span></div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="iconName" class="col-form-label col-sm-2 ">Icon Name</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{iconName}" class="form-control" id="iconName" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('iconName')}" th:errors="*{iconName}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="iconImgPath" class="col-form-label col-sm-2 ">Icon Img Path</label>
+                                <div class="col-sm-5">
+                                    <input type="text" th:field="*{iconImgPath}" class="form-control" id="iconImgPath" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('iconImgPath')}" th:errors="*{iconImgPath}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="sequence" class="col-form-label col-sm-2 ">Sequence</label>
+                                <div class="col-sm-5">
+                                    <input type="number" th:field="*{sequence}" class="form-control" id="sequence" placeholder="" />
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('sequence')}" th:errors="*{sequence}" class="text-danger"></span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="active" class="col-form-label col-sm-2 ">Active</label>
+                                <div class="col-sm-5">
+<!--                                    <input type="checkbox" name="active" th:checked="*{active}" class="form-control" id="active" placeholder="" />-->
+                                    <input type="checkbox" class="form-control" id="active" name="active" th:checked="*{active}"  th:value="*{active}" onclick="this.value = this.checked"/>
+                                </div>
+                                <div class="col-sm-5"><span th:if="${#fields.hasErrors('active')}" th:errors="*{active}" class="text-danger"></span></div>
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <a href="/serviceitem/index" th:href="@{/serviceitem/index}" class="btn btn-default"><i class="fas fa-times"></i> Cancel</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-info"><i class="fas fa-check"></i> Update</button>
+                        </div>
+                        <!-- /.card-footer -->
+                    </form>
+                </div>
+                <!-- /.card -->
+
+
+
+
+            </div><!--/. container-fluid -->
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer th:include="layouts/_footer :: footer" class="main-footer"></footer>
+
+</div>
+<!-- ./wrapper -->
+
+
+<div th:include="layouts/_footerScripts :: footerScripts"></div>
+<!-- PAGE SCRIPTS -->
+<script type="text/javascript" src="/static/js/application.js" th:src="@{/js/application.js}"></script>
+
+
+</body>
+</html>
