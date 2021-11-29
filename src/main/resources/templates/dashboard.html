@@ -40,7 +40,7 @@
             <div class="container-fluid">
 
 
-<!--                <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
+<!--            <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
                 <div sec:authorize="hasAnyAuthority('ADMIN', 'EDITOR')">
                 </div>
 
@@ -51,7 +51,18 @@
 <!--                <th:block th:utext="${T(com.thikthak.app.util.TestUtils).toUpperCase2('hello world 123')}"></th:block>-->
 
                 <div class="row">
-                    <div th:remove="tag" th:utext="${HTML_visitorsLog}"></div>
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Visitors Traffic</span>
+                                <span class="info-box-number" th:text="${HTML_visitorsLog}"><small></small></span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
                     <div th:remove="tag" th:utext="${HTML_nOfSrvReqStr}"></div>
                     <div th:remove="tag" th:utext="${HTML_nOfUserStr}"></div>
                     <div th:remove="tag" th:utext="${HTML_onTechUserStr}"></div>

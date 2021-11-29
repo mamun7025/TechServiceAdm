@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-@SuppressWarnings("SqlNoDataSourceInspection")
 @Controller
 @RequestMapping({ "/", "/admin" })
 public class DashboardController {
@@ -47,7 +46,6 @@ public class DashboardController {
     UserDetailsServiceImpl userDetailsService;
 
     private ServiceOrdersService serviceOrdersService;
-    private MenuRenderService menuRenderService;
 
 
     protected HttpServletRequest request;
@@ -59,16 +57,12 @@ public class DashboardController {
     }
 
     @Autowired
-    public void setInjectedBean(
-            ServiceOrdersService serviceOrdersService,
-            MenuRenderService menuRenderService) {
+    public void setInjectedBean(ServiceOrdersService serviceOrdersService) {
         this.serviceOrdersService = serviceOrdersService;
-        this.menuRenderService = menuRenderService;
-//        HttpServletRequest curRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
     }
 
     @Autowired
-    private EntityManagerFactory entityManagerFactory;
+    private EntityManagerFactory emf;
 
 
     public Date getTodayDateOnly() throws ParseException {
@@ -76,25 +70,6 @@ public class DashboardController {
         Date today = new Date();
         return formatter.parse(formatter.format(today));
     }
-
-
-
-
-
-
-    @GetMapping("/welcome2")
-    public String printHello(){
-        return ("<h1> Welcome </h1>");
-//        return null;
-    }
-
-
-    @RequestMapping(value = "/hello", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public String helloRest() {
-        return ("hello world");
-    }
-
 
 
 
@@ -163,27 +138,11 @@ public class DashboardController {
 
     public void renderUserTrafficCard( Model model ){
         String countNum = this.getNumberOfTrafficRequest();
-        String HTML_visitorsLog = "<div class=\"col-12 col-sm-6 col-md-3\">\n" +
-                "                <div class=\"info-box\">\n" +
-                "                    <span class=\"info-box-icon bg-info elevation-1\"><i class=\"fas fa-cog\"></i></span>\n" +
-                "\n" +
-                "                    <div class=\"info-box-content\">\n" +
-                "                        <span class=\"info-box-text\">Visitors Traffic</span>\n" +
-                "                        <span class=\"info-box-number\">\n" +
-                "                            "+countNum+"\n" +
-                "                            <small></small>\n" +
-                "                        </span>\n" +
-                "                    </div>\n" +
-                "                    <!-- /.info-box-content -->\n" +
-                "                </div>\n" +
-                "                <!-- /.info-box -->\n" +
-                "            </div>";
-
-        model.addAttribute("HTML_visitorsLog", HTML_visitorsLog);
+        model.addAttribute("HTML_visitorsLog", countNum);
     }
 
 
-    public Model loadServiceOrderData( Model model ){
+    public void loadServiceOrderData( Model model ){
 
         PaginationHelper pHelper = new PaginationHelper(request);
         Page<ServiceOrders> page = serviceOrdersService.getAllPaginated(this.clientParams, pHelper.pageNum, pHelper.pageSize, pHelper.sortField, pHelper.sortDir);
@@ -199,13 +158,12 @@ public class DashboardController {
 
         model.addAttribute("objectList", list);
 
-        return model;
     }
 
 
     public String getAllUser(){
 
-        EntityManager em = this.entityManagerFactory.createEntityManager();
+        EntityManager em = this.emf.createEntityManager();
         Long nOfUser;
 
         try {
@@ -229,7 +187,7 @@ public class DashboardController {
     public String getAllOnlineTechUser(){
 
         Long nOfUser;
-        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin(); // tnx start
@@ -252,7 +210,7 @@ public class DashboardController {
 
     public String getNumberOfServiceRequest(){
 
-        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         Long countNum;
 
         try {
@@ -276,7 +234,7 @@ public class DashboardController {
 
     public String getNumberOfTrafficRequest(){
 
-        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         Long countNum;
 
         try {
@@ -285,8 +243,6 @@ public class DashboardController {
             Date todayDateOnly = this.getTodayDateOnly();
             Query query2 = em.createQuery(
                     "SELECT count( distinct e.ipAddress ) FROM VisitorsLog e WHERE e.creationDateTime > :creationDateTime ");
-            // query2.setParameter("creationDateTime", todayDate,TemporalType.DATE);
-            // query2.setParameter("creationDateTime", Timestamp.valueOf(LocalDateTime.now().minusSeconds(100000)));
             query2.setParameter("creationDateTime", todayDateOnly);
             countNum = (Long) query2.getSingleResult();
 
@@ -308,7 +264,7 @@ public class DashboardController {
     @ResponseBody
     public HashMap<String, Object> loadServiceRequestChartData(){
 
-        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityManager em = emf.createEntityManager();
 
         ArrayList<String> months = new ArrayList<>();
         ArrayList<Object> totalReqs = new ArrayList<>();
@@ -317,15 +273,12 @@ public class DashboardController {
         try {
             em.getTransaction().begin(); // tnx start
 
-//            Query query3 = em.createQuery(
-//                    "SELECT COUNT(e.orderCode) AS totalReq, trunc(e.orderPlaceTime) as t FROM ServiceOrders e GROUP BY trunc(e.orderPlaceTime) ORDER BY e.orderPlaceTime ASC");
-//            List<Object[]> results = query3.getResultList();
-
             String cd_fromDate = null;
             String cd_toDate = null;
             if (this.request.getParameter("cd_fromDate") != null && !this.request.getParameter("cd_fromDate").isEmpty()) cd_fromDate = this.request.getParameter("cd_fromDate");
             if (this.request.getParameter("cd_toDate") != null && !this.request.getParameter("cd_toDate").isEmpty()) cd_toDate = this.request.getParameter("cd_toDate");
 
+            // default Oracle
             String sqlString = "" +
                     "SELECT COUNT(ORDER_CODE)                    AS TOTAL_REQ, \n" +
                     "       TO_CHAR(ORDER_PLACE_TIME, 'Month')   AS ORDER_PLACE_MONTH, \n" +
@@ -335,6 +288,7 @@ public class DashboardController {
                     "          EXTRACT(MONTH FROM ORDER_PLACE_TIME) \n" +
                     "ORDER  BY ORDER_PLACE_MONTH2 ASC";
 
+            // for MySQL
             if(DbClient.dbVendor().equals("MYSQL")){
                 sqlString = "" +
                         "SELECT COUNT(ORDER_CODE)                    AS TOTAL_REQ, \n" +
@@ -346,6 +300,7 @@ public class DashboardController {
                         "ORDER  BY ORDER_PLACE_MONTH2 ASC";
             }
 
+            // defualt Oracle
             if(cd_fromDate != null && cd_toDate != null){
                 sqlString = "" +
                         "SELECT COUNT(ORDER_CODE)                    AS TOTAL_REQ, \n" +
@@ -358,6 +313,7 @@ public class DashboardController {
                         "          EXTRACT(MONTH FROM ORDER_PLACE_TIME) \n" +
                         "ORDER  BY ORDER_PLACE_MONTH2 ASC ";
 
+                // for MySQL
                 if(DbClient.dbVendor().equals("MYSQL")){
                     sqlString = "" +
                             "SELECT COUNT(ORDER_CODE)                    AS TOTAL_REQ, \n" +
@@ -384,26 +340,6 @@ public class DashboardController {
             }
 
             em.getTransaction().commit(); // tnx end
-
-
-            // Prep work
-            /*SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-            Session session = sessionFactory.getCurrentSession();
-            session.beginTransaction();
-            // Get All Employees
-            SQLQuery query = session.createSQLQuery(
-                    "SELECT\n" +
-                            "    COUNT(order_code) AS ORDER_CODE,\n" +
-                            "    trunc(order_place_time) AS ORDER_PLACE_DATE\n" +
-                            "FROM\n" +
-                            "SERVICE_ORDERS\n" +
-                            "GROUP BY trunc(order_place_time)");
-            List<Object[]> rows = query.list();
-            for(Object[] row : rows){
-                System.out.println(rows);
-            }*/
-
-
 
         } catch (NoResultException e){
             return null;
